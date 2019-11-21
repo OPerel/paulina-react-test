@@ -36,7 +36,7 @@ export default withAuth(class MainNavigation extends Component<MainNavPropsTypes
         this.setState({ isAuthenticated })
         if (isAuthenticated) {
           this.props.auth.getUser()
-            .then((user: any) => this.setState({ userEmail: user.email }))
+            .then((user: any) => this.setState({ userEmail: user.email }));
         }
       }
     });
@@ -44,12 +44,13 @@ export default withAuth(class MainNavigation extends Component<MainNavPropsTypes
 
   componentDidMount(): void {
     this.checkAuthentication();
+    this.props.auth.getAccessToken()
+      .then((res: string) => this.props.getAccessToken(res));
   }
 
   componentDidUpdate(): void {
     this.checkAuthentication();
-    this.props.auth.getAccessToken()
-      .then((res: string) => this.props.getAccessToken(res));
+    
   }
 
   render () {
