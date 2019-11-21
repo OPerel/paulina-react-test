@@ -1,25 +1,31 @@
 import React from 'react';
-import logo from './logo.svg';
+import { Route } from 'react-router-dom';
+import { SecureRoute, ImplicitCallback } from '@okta/okta-react';
+
 import './App.css';
 
-const App: React.FC = () => {
+import MainNavigation from './components/Navigation/MainNavigation';
+import LandingPage from './components/LandingPage/LandingPage';
+import OktaLogin from './components/OktaAuth/OktaLogin';
+import FlowManagement from './components/FlowManagement/FlowManagement';
+
+const App: React.FC = () => { 
+
+  const getAccessToken = (token: string) => {
+    console.log('App accessToken: ', token)
+    return token;
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <MainNavigation getAccessToken={getAccessToken} />
+      <div className="App">
+        <Route exact path="/" component={LandingPage} />
+        <Route path="/login" render={() => <OktaLogin baseUrl={`${process.env.REACT_APP_OKTA_URL}`} />} />
+        <SecureRoute path="/flow-management" component={FlowManagement} />
+        <Route path='/implicit/callback' component={ImplicitCallback} />
+      </div>
+    </>
   );
 }
 
