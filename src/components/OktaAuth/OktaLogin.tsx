@@ -8,7 +8,11 @@ type OktaLoginPropsTypes = {
   baseUrl: string
 }
 
-export default withAuth(class OktaLogin extends Component<OktaLoginPropsTypes, {authenticated: null | boolean}> {
+type OktaLoginStateTypes = {
+  authenticated: null | boolean
+}
+
+export default withAuth(class OktaLogin extends Component<OktaLoginPropsTypes, OktaLoginStateTypes> {
   constructor(props: any) {
     super(props);
     this.state = {
@@ -24,13 +28,12 @@ export default withAuth(class OktaLogin extends Component<OktaLoginPropsTypes, {
     }
   }
 
-  componentDidUpdate() {
-    this.checkAuthentication();
-  }
-
   onSuccess = (res: any) => {
+    if (res.activationToken) {
+      localStorage.Registration = true;
+    }
     if (res.status === 'SUCCESS') {
-      console.log('login res: ', res)
+      console.log('login res: ', res);
       return this.props.auth.redirect({
         sessionToken: res.session.token
       });
@@ -45,13 +48,18 @@ export default withAuth(class OktaLogin extends Component<OktaLoginPropsTypes, {
     console.log('error logging in', err);
   }
 
+  componentDidUpdate() {
+    this.checkAuthentication();
+  }
+
   render() {
     if (this.state.authenticated === null) return null;
     return this.state.authenticated ?
-      <Redirect to={{ pathname: '/flow-management' }}/> :
+      <Redirect to={{ pathname: '/flow-management' }} /> :
       <OktaSignInWidget
         baseUrl={this.props.baseUrl}
         onSuccess={this.onSuccess}
-        onError={this.onError}/>;
+        onError={this.onError}
+      />;
   }
 });

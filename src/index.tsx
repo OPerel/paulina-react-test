@@ -8,7 +8,6 @@ import * as serviceWorker from './serviceWorker';
 
 function onAuthRequired(): void {
   window.location.href = `http://localhost:${process.env.REACT_APP_PORT}/login`;
-  console.log('env: ', process.env.REACT_APP_OKTA_URL)
 }
 
 ReactDOM.render(

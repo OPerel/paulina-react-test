@@ -4,25 +4,27 @@ import './FlowManagementTable.css';
 
 type FlowManagementPropsTypes = {
   tableName: string,
-  documentList: []
+  documentsList: [],
+  headerList: string[],
+  keyValueList: string[]
 }
 
-const FlowManagementTable: React.FC<FlowManagementPropsTypes> = ({ tableName, documentList }) => {
+const FlowManagementTable: React.FC<FlowManagementPropsTypes> = ({ tableName, documentsList, headerList, keyValueList }) => {
   return (
-    <div style={{ margin: '0 2%', textAlign: 'left' }}>
+    <div className="tables">
       <h3>{tableName}</h3>
       <table>
         <thead>
           <tr>
-            <th>Name</th><th>Doc ID</th>
+            {headerList.map(header => <th key={header}>{header}</th>)}
           </tr>
         </thead>
         <tbody>
           {
-            documentList ? documentList.map((doc: any) => (
+            documentsList ? documentsList.map((doc: any) => (
               <tr id={doc._id} key={doc._id}>
-                <td>{doc.name}</td>
-                <td>{doc._id}</td>
+                {keyValueList.map(tdKey => <td key={tdKey}>{eval(tdKey)}</td>)}
+                {/** Bad eval! What's the alternative? */} 
               </tr>
             )) : null
           }

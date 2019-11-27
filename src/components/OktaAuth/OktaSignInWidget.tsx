@@ -17,9 +17,8 @@ class OktaSignInWidget extends Component<SignInPropsTypes, {}> {
     const el = ReactDOM.findDOMNode(this);
     this.widget = new OktaSignIn({
       baseUrl: this.props.baseUrl,
-      authParams: {
-        pkce: true,
-      }
+      authParams: { pkce: true },
+      features: { registration: true }
     });
     this.widget.renderEl({el}, this.props.onSuccess, this.props.onError);
   }

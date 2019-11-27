@@ -1,3 +1,12 @@
+.tables {
+  margin: 0 2%;
+  text-align: left;
+}
+
+table {
+  width: 100%;
+}
+
 table, th, td {
   border: 0.5px solid black;
   border-collapse: collapse;

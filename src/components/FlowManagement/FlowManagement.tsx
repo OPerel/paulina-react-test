@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { withAuth } from '@okta/okta-react';
 
 import FlowManagementTable from './FlowManagementTable';
 
@@ -7,10 +8,10 @@ type FlowManagementState = {
 }
 
 type FlowManagementProps = {
-  accessToken: string
+  auth: any
 }
 
-class FlowManagement extends Component<FlowManagementProps, FlowManagementState> {
+export default withAuth(class FlowManagement extends Component<FlowManagementProps, FlowManagementState> {
   constructor (props: any) {
     super(props)
     this.state = {
@@ -19,22 +20,31 @@ class FlowManagement extends Component<FlowManagementProps, FlowManagementState>
   }
 
   getUserFlows(): void {
-    const url = `${process.env.REACT_APP_API_URL}/api/getuserflows?SessionId=dkjfbsdkjd8dnfud8hnd8nv8ev`;
-    console.log('send getuserflows req with accessToken: ' + this.props.accessToken + '\nAnd static SessionId');
-    fetch(url, {
-      method: 'get',
-      headers: {
-        authorization: `Barear ${this.props.accessToken}`
-      },
+    this.props.auth.getAccessToken().then((accessToken: string) => {
+      if (localStorage.Registration === 'true') {
+        accessToken = `Registration Barear ${accessToken}` 
+        localStorage.Registration = false;
+      } else {
+        accessToken = `Barear ${accessToken}`  
+      }
+      
+      const url = `${process.env.REACT_APP_API_URL}/api/getuserflows?SessionId=${accessToken}`;
+      console.log('send getuserflows req with accessToken: ' + accessToken + '\nAnd static SessionId');
+      fetch(url, {
+        method: 'get',
+        headers: {
+          authorization: accessToken
+        },
+      })
+      .then((res: any) => res.json())
+      .then((userFlows: any) => {
+        console.log('Got user flows: ', userFlows);
+        this.setState({ userFlows })
+      })
+      .catch(err => {
+        console.warn(err);
+      });
     })
-    .then((res: any) => res.json())
-    .then((userFlows: any) => {
-      console.log('Got user flows: ', userFlows);
-      this.setState({ userFlows })
-    })
-    .catch(err => {
-      console.warn(err);
-    });
   }
 
   componentDidMount() {
@@ -49,31 +59,40 @@ class FlowManagement extends Component<FlowManagementProps, FlowManagementState>
       OutsourceJobs
     } = this.state.userFlows;
 
+    // console.log('flowManagement accessToken render: ', accessToken)
     return (
       <>
         <h2>Flow Management!</h2>
         <FlowManagementTable
           tableName="Published Documents"
-          documentList={publishedDocumentsList}
+          documentsList={publishedDocumentsList}
+          headerList={['Document Name', 'Document ID', 'Creator']}
+          keyValueList={['doc.name', 'doc._id', 'doc._metadata.creator']}
         />
 
         <FlowManagementTable
           tableName="Progress Documents"
-          documentList={pDocumentsList}
+          documentsList={pDocumentsList}
+          headerList={['Document Name', 'Document ID', 'Creator']}
+          keyValueList={['doc.name', 'doc._id', 'doc._metadata.creator']}
         />
 
         <FlowManagementTable
           tableName="In Progress Flows"
-          documentList={InProgressFlows}
+          documentsList={InProgressFlows}
+          headerList={['Document Name', 'Document ID']}
+          keyValueList={['doc.name', 'doc._id']}
         />
 
         <FlowManagementTable
           tableName="Outsource Jobs"
-          documentList={OutsourceJobs}
+          documentsList={OutsourceJobs}
+          headerList={['Document Name', 'Document ID']}
+          keyValueList={['doc.name', 'doc._id']}
         />
       </>
     )
   }
-}
+});
 
-export default FlowManagement;
+// export default FlowManagement;
