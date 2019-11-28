@@ -8,6 +8,7 @@ import MainNavigation from './components/Navigation/MainNavigation';
 import LandingPage from './components/LandingPage/LandingPage';
 import OktaLogin from './components/OktaAuth/OktaLogin';
 import FlowManagement from './components/FlowManagement/FlowManagement';
+import UserDocument from './components/UserDocument/UserDocument';
 
 const App: React.FC = () => { 
   return (
@@ -17,6 +18,7 @@ const App: React.FC = () => {
         <Route exact path="/" component={LandingPage} />
         <Route path="/login" render={() => <OktaLogin baseUrl={process.env.REACT_APP_OKTA_URL} />} />
         <SecureRoute path="/flow-management" component={FlowManagement} />
+        <SecureRoute path="/user-document" component={UserDocument} />
         <Route path='/implicit/callback' component={ImplicitCallback} />
       </div>
     </>
