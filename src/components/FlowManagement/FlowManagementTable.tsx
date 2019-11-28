@@ -14,8 +14,6 @@ type FlowManagementPropsTypes = {
 const FlowManagementTable: React.FC<FlowManagementPropsTypes> = ({ tableName, documentsList, headerList, keyValueList, accessToken }) => {
   
   const processExistingDocument = (documentData: any): void => {
-    console.log('processExistingDocument documentData: ', documentData)
-    
     if (accessToken) {
       accessToken = 'Barear ' + accessToken;
       console.log('Send processExistingDocument with documentData: ', documentData, '\n And with accessToken: ', accessToken)
@@ -45,7 +43,7 @@ const FlowManagementTable: React.FC<FlowManagementPropsTypes> = ({ tableName, do
             <th>Link</th>
           </tr>
         </thead>
-       <tbody>
+        <tbody>
           {
             documentsList ? documentsList.map((doc: any) => (
               <tr id={doc._id} key={doc._id}>
@@ -71,16 +69,3 @@ const FlowManagementTable: React.FC<FlowManagementPropsTypes> = ({ tableName, do
 }
 
 export default FlowManagementTable;
-
-
-
-/**********
- * 
- * processExistingDocument({
- *  Owner: doc._metadata.owner,
- *  DocumentInfo: {selection: {_id: doc._id}, collection: 'documents'}
- * })
- * 
- * 
- * 
- */

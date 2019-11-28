@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { withAuth } from '@okta/okta-react';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 
 type MainNavPropsTypes = {
   auth: any
@@ -57,16 +57,16 @@ export default withAuth(class MainNavigation extends Component<MainNavPropsTypes
   render () {
     const { isAuthenticated } = this.state;
     const loc = window.location.href;
-    const goTo = loc !== 'http://localhost:3000/' ? '/' : '/flow-management';
     return (
       <nav style={{ padding: '20px' }}>
         {
           isAuthenticated ? 
-          <>  
-            <span style={{ marginRight: '30px' }}>{this.state.userEmail}</span>
-            <Link to={goTo} style={{ marginRight: '30px' }}>{goTo === '/' ? 'Home' : 'Flow Management'}</Link>
+          <div style={{ display: 'flex', justifyContent: 'space-around' }}>  
+            <span>{this.state.userEmail}</span>
+            <NavLink exact to="/" activeStyle={{ display: 'none' }}>Home</NavLink>
+            <NavLink to="/flow-management" activeStyle={{ display: 'none' }}>Flow Management</NavLink>
             <button onClick={this.logout}>Log Out</button>
-          </> : (
+          </div> : (
             loc !== 'http://localhost:3000/login' ?
             <button onClick={this.login}>Log In</button> :
             <Link to="/">Home</Link>

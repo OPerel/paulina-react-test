@@ -24,8 +24,9 @@ class UserDocument extends Component<FlowManagementPropsTypes, FlowManagementSta
       .then((token: string) => token)
   }
 
-  async componentDidMount() {
+  async fetchUserDocument() {
     const accessToken = 'Barear ' + await this.accessToken();
+    console.log('Send usergetdocument requset with accessToken: ', accessToken);
     fetch(`${process.env.REACT_APP_API_URL}/api/usergetdocument?SessionId=dslf546khds$GgGfhsdfdfsd`, {
       method: 'post',
       headers: {
@@ -39,6 +40,10 @@ class UserDocument extends Component<FlowManagementPropsTypes, FlowManagementSta
       this.setState({ userDocument: documentData })
     })
     .catch(err => console.log(err));
+  }
+
+  componentDidMount() {
+    this.fetchUserDocument();
   }
 
   render() {
