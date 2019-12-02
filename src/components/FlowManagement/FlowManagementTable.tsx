@@ -36,7 +36,7 @@ const FlowManagementTable: React.FC<FlowManagementPropsTypes> = ({ tableName, do
   return (
     <div className="tables">
       <h3>{tableName}</h3>
-      <table>
+      <table id={tableName}>
         <thead>
           <tr>
             {headerList.map(header => <th key={header}>{header}</th>)}

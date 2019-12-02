@@ -62,14 +62,14 @@ export default withAuth(class MainNavigation extends Component<MainNavPropsTypes
         {
           isAuthenticated ? 
           <div style={{ display: 'flex', justifyContent: 'space-around' }}>  
-            <span>{this.state.userEmail}</span>
+            <span id="email">{this.state.userEmail}</span>
             <NavLink exact to="/" activeStyle={{ display: 'none' }}>Home</NavLink>
             <NavLink to="/flow-management" activeStyle={{ display: 'none' }}>Flow Management</NavLink>
-            <button onClick={this.logout}>Log Out</button>
+            <button id="logout" onClick={this.logout}>Log Out</button>
           </div> : (
             loc !== 'http://localhost:3000/login' ?
-            <button onClick={this.login}>Log In</button> :
-            <Link to="/">Home</Link>
+            <button id="login" onClick={this.login}>Log In</button> :
+            <Link id="home-link" to="/">Home</Link>
           )
         }
       </nav>

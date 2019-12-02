@@ -1,3 +1,9 @@
+import * as synctractor from 'synctractor'; 
+synctractor.init();
+synctractor.monitorFetch();
+synctractor.monitorTimeout((_, t) => t !== 11000);
+
+/* eslint-disable import/first */
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router } from 'react-router-dom';
@@ -5,9 +11,10 @@ import { Security } from '@okta/okta-react';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
+/* eslint-disable */
 
-function onAuthRequired(): void {
-  window.location.href = `http://localhost:${process.env.REACT_APP_PORT}/login`;
+function onAuthRequired({ history }: any): void {
+  history.push('/login');
 }
 
 ReactDOM.render(

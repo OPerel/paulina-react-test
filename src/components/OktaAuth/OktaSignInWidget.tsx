@@ -18,7 +18,8 @@ class OktaSignInWidget extends Component<SignInPropsTypes, {}> {
     this.widget = new OktaSignIn({
       baseUrl: this.props.baseUrl,
       authParams: { pkce: true },
-      features: { registration: true }
+      features: { registration: true },
+      i18n: { en: { 'primaryauth.title': 'Sign in to WonderFlow' } }
     });
     this.widget.renderEl({el}, this.props.onSuccess, this.props.onError);
   }
