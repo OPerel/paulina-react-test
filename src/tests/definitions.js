@@ -47,7 +47,7 @@ function Defs() {
   this.itemInTableList = itemInTableList;
 
   const pDocumentsList = "documentData in pDocumentsList";
-  const publishedDocumentsList = "documentData in publishedDocumentsList";
+  // const publishedDocumentsList = "documentData in publishedDocumentsList";
   const progressFlowsList = "flowData in inProgressFlows";
   const outsourceJobsList = "job in outsourceJobs";
 

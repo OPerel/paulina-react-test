@@ -9,9 +9,9 @@ const Flokitest = require('../flokitest');
 const defs = require('../definitions');
 const flokitest = new Flokitest(defs.InitialCountes);
 
-const rootUrl = 'http://localhost:3000/';
-const loginPage = rootUrl + 'login';
-const flowManagementPage = rootUrl + 'flow-management';
+const rootUrl = 'http://localhost:3000';
+const loginPage = rootUrl + '/login';
+const flowManagementPage = rootUrl + '/flow-management';
 
 const loginSleepTime = 5000;
 
@@ -36,6 +36,7 @@ function GoToOktaLoginPageViaButton() {
 function GoToOktaLoginPageViaUrl() {
   console.log("Go To Okta Login Page via URL");
   browser.get(loginPage);
+  browser.sleep(2000);
 }
 
 function FillFalseUserData() {
@@ -163,7 +164,7 @@ function SuccessfulLogin() {
     // TODO: for next 3 tests, implement FlowManagementCounts that works with new paulina
     [SuccessLogin, [LogOutButton, FlowManagementTitle, FloydUserEmail]],
     // 3. Go to Flow Management page (Reload), Expect flow-management page
-    [GoToFlowManagementPage, [LogOutButton/*, defs.FlowManagementCounts*/]],
+    [GoToFlowManagementPage, [LogOutButton, FloydUserEmail/*, defs.FlowManagementCounts*/]],
     // 5. Go to Login Page when user is already logged-in, Expect logout button 
     [GoToOktaLoginPageViaUrl, [LogOutButton, FlowManagementTitle, FloydUserEmail]],
     // 6. Click logout button and expect okta login page.
@@ -177,7 +178,7 @@ function NewUserRegistration() {
     [GoToOktaLoginPageViaUrl, SignUpButton],
     // 2. Click sign up button, Expect Registration elements
     [ClickSignUp, RegistrationElements],
-    // 3. Register new user, Expect logput button and user email ,Should also expect flow-management page
+    // 3. Register new user, Expect logput button and user email, Should also expect flow-management page
     // TODO: fix login and registration and uncomment check for flow-management page
     [RegisterNewUser, [LogOutButton, NewUserEmail/*, FlowManagementTitle */]]
   ]);
