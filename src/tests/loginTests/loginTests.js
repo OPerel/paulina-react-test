@@ -133,6 +133,11 @@ function FlowManagementTitle() {
   expect(element(by.tagName('h2')).getText()).toBe('Flow Management!');
 }
 
+function FlowManagementCounts() {
+  console.log('Expect 4 tables in Flow Management');
+  expect(element.all(by.tagName('table')).count()).toBe(4)
+}
+
 function SignUpButton() {
   console.log('Expect sign up button')
   expect(element(by.className('registration-link')).getText()).toBe('Sign up');
@@ -164,7 +169,7 @@ function SuccessfulLogin() {
     // TODO: for next 3 tests, implement FlowManagementCounts that works with new paulina
     [SuccessLogin, [LogOutButton, FlowManagementTitle, FloydUserEmail]],
     // 3. Go to Flow Management page (Reload), Expect flow-management page
-    [GoToFlowManagementPage, [LogOutButton, FloydUserEmail/*, defs.FlowManagementCounts*/]],
+    [GoToFlowManagementPage, [LogOutButton, FloydUserEmail, FlowManagementCounts]],
     // 5. Go to Login Page when user is already logged-in, Expect logout button 
     [GoToOktaLoginPageViaUrl, [LogOutButton, FlowManagementTitle, FloydUserEmail]],
     // 6. Click logout button and expect okta login page.

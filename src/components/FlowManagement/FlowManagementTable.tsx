@@ -20,7 +20,7 @@ const FlowManagementTable: React.FC<FlowManagementPropsTypes> = ({ tableName, do
       method: 'post',
       headers: {
         'Content-Type': 'application/json',
-        authorization: 'Barear ' + accessToken
+        authorization: accessToken
       },
       body: JSON.stringify(documentData)
     })
@@ -51,15 +51,15 @@ const FlowManagementTable: React.FC<FlowManagementPropsTypes> = ({ tableName, do
                   </td>
                 ))}
                 <td>
-                  {accessToken ? <Link
-                    to="/user-document"
-                    onClick={() => processExistingDocument({
-                      Owner: doc._metadata.owner,
-                      DocumentInfo: {selection: {_id: doc._id}, collection: 'documents'}
-                    })}
-                  >
-                    Go to document
-                  </Link> : null}
+                  {accessToken ?
+                    <Link
+                      to="/user-document"
+                      onClick={() => processExistingDocument({
+                        Owner: doc._metadata.owner,
+                        DocumentInfo: {selection: {_id: doc._id}, collection: 'documents'}
+                      })}
+                    >Go to document</Link>
+                  : null}
                 </td>
               </tr>
             )) : null
