@@ -21,7 +21,7 @@ class FlowManagement extends Component<FlowManagementProps, FlowManagementState>
     }
   }
 
-  getAccessToken = () => {
+  getAccessToken = (): void => {
     this.props.auth.getAccessToken()
       .then((accessToken: string) => {
         this.setState({ accessToken }, this.getUserFlows)
