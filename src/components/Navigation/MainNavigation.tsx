@@ -3,17 +3,21 @@ import { withAuth } from '@okta/okta-react';
 import { connect } from 'react-redux';
 import { Link, NavLink } from 'react-router-dom';
 
-import { getIsAuthenticated, getUserEmail } from './actions';
+import { getIsAuthenticated, getUserEmail, getAccessToken } from './actions';
+import { NavState } from './reducers';
+import { IsAuthenticated, UserEmail, AccessToken } from './types';
 
 type MainNavPropsTypes = {
   auth: any,
   onCheckAuthentication: (isAuthenticated: boolean) => void,
-  isAuthenticated: boolean,
   onGetUserEmail: (userEmail: string) => void,
-  userEmail: string
+  onGetAccessToken: (accessToken: string) => void,
+  isAuthenticated: IsAuthenticated,
+  userEmail: UserEmail,
+  accessToken: AccessToken
 }
 
-const mapStateToProps = (state: any) => {
+const mapStateToProps = (state: NavState) => {
   return {
     isAuthenticated: state.setIsAuthenticated.isAuthenticated,
     userEmail: state.setUserEmail.userEmail
@@ -22,8 +26,9 @@ const mapStateToProps = (state: any) => {
 
 const mapDispatchToProps = (dispatch: any) => {
   return {
-    onCheckAuthentication: (isAuthenticated: boolean) => dispatch(getIsAuthenticated(isAuthenticated)),
-    onGetUserEmail: (userEmail: string) => dispatch(getUserEmail(userEmail))
+    onCheckAuthentication: (isAuthenticated: IsAuthenticated) => dispatch(getIsAuthenticated(isAuthenticated)),
+    onGetAccessToken: (accessToken: AccessToken) => dispatch(getAccessToken(accessToken)),
+    onGetUserEmail: (userEmail: UserEmail) => dispatch(getUserEmail(userEmail))
   }
 }
 
@@ -38,27 +43,28 @@ class MainNavigation extends Component<MainNavPropsTypes, {}> {
         if (isAuthenticated !== this.props.isAuthenticated) {
           console.log('User is authenticated!')
           this.props.onCheckAuthentication(isAuthenticated);
-          this.getUser();
+          this.getAccessToken();
         }
       });
   }
-
-  // getAccessToken = (): void => {
-  //   this.props.auth.getAccessToken()
-  //     .then((accessToken: string) => {
-  //       this.props.onGetUserEmail(accessToken)
-  //     });
-  // }
+  
+  getAccessToken = (): void => {
+    this.props.auth.getAccessToken()
+      .then((accessToken: string) => {
+        console.log('Got accessToken: ', accessToken);
+        this.props.onGetAccessToken(accessToken);
+        this.getUser();
+      })
+      .catch((err: Error) => console.log(err));
+  }
 
   getUser(): void {
-    if (this.props.isAuthenticated) {
-      this.props.auth.getUser()
-        .then((user: any) => {
-          console.log('Got user email: ', user.email)
-          this.props.onGetUserEmail(user.email);
-        })
-        .catch((err: Error) => console.log(err))
-    }
+    this.props.auth.getUser()
+      .then((user: any) => {
+        console.log('Got user email: ', user.email)
+        this.props.onGetUserEmail(user.email);
+      })
+      .catch((err: Error) => console.log(err));
   }
 
   componentDidMount() {

@@ -1,35 +1,32 @@
 import React, { Component } from 'react';
-import { withAuth } from '@okta/okta-react';
+// import { withAuth } from '@okta/okta-react';
+import { connect } from 'react-redux';
 
 import FlowManagementTable from './FlowManagementTable';
 
 type FlowManagementState = {
-  userFlows: any,
-  accessToken: string
+  userFlows: any
 }
 
 type FlowManagementProps = {
-  auth: any
+  // auth: any
+  accessToken: string
 }
+
+const mapStateToProps = (state: any) => ({
+  accessToken: state.setAccessToken.accessToken
+})
 
 class FlowManagement extends Component<FlowManagementProps, FlowManagementState> {
   constructor (props: any) {
     super(props)
     this.state = {
-      userFlows: {},
-      accessToken: ''
+      userFlows: {}
     }
   }
 
-  getAccessToken = (): void => {
-    this.props.auth.getAccessToken()
-      .then((accessToken: string) => {
-        this.setState({ accessToken }, this.getUserFlows)
-      });
-  }
-
   getUserFlows(): void {
-    let { accessToken } = this.state;
+    let { accessToken } = this.props;
     if (localStorage.Registration === 'true') {
       accessToken = `Registration Barear ${accessToken}` 
       localStorage.Registration = false;
@@ -56,7 +53,11 @@ class FlowManagement extends Component<FlowManagementProps, FlowManagementState>
   }
 
   componentDidMount() {
-    this.getAccessToken();
+    setTimeout(() => this.getUserFlows(), 0)
+    /** 
+     * hacky solution! on page refreah it needs to wait for the async call of getAccessToken in MainNav.
+     * what's the proper way?
+    */
   }
 
   render() {
@@ -75,7 +76,7 @@ class FlowManagement extends Component<FlowManagementProps, FlowManagementState>
           documentsList={publishedDocumentsList}
           headerList={['Document Name', 'Document ID', 'Creator']}
           keyValueList={['doc.name', 'doc._id', 'doc._metadata.creator']}
-          accessToken={this.state.accessToken}
+          accessToken={this.props.accessToken}
         />
 
         <FlowManagementTable
@@ -103,4 +104,4 @@ class FlowManagement extends Component<FlowManagementProps, FlowManagementState>
   }
 };
 
-export default withAuth(FlowManagement);
+export default connect(mapStateToProps)(FlowManagement);
