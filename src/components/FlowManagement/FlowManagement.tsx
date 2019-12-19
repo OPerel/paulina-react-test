@@ -53,7 +53,8 @@ class FlowManagement extends Component<FlowManagementProps, FlowManagementState>
   }
 
   componentDidMount() {
-    setTimeout(() => this.getUserFlows(), 0)
+    // setTimeout(() => this.getUserFlows(), 0)
+    this.getUserFlows()
     /** 
      * hacky solution! on page refreah it needs to wait for the async call of getAccessToken in MainNav.
      * what's the proper way?

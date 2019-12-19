@@ -11,7 +11,8 @@ type MainNavPropsTypes = {
   auth: any,
   onCheckAuthentication: (isAuthenticated: boolean) => void,
   onGetUserEmail: (userEmail: string) => void,
-  onGetAccessToken: (accessToken: string) => void,
+  // onGetAccessToken: (accessToken: string) => void,
+  dispatch: any,
   isAuthenticated: IsAuthenticated,
   userEmail: UserEmail,
   accessToken: AccessToken
@@ -24,13 +25,13 @@ const mapStateToProps = (state: NavState) => {
   }
 }
 
-const mapDispatchToProps = (dispatch: any) => {
-  return {
-    onCheckAuthentication: (isAuthenticated: IsAuthenticated) => dispatch(getIsAuthenticated(isAuthenticated)),
-    onGetAccessToken: (accessToken: AccessToken) => dispatch(getAccessToken(accessToken)),
-    onGetUserEmail: (userEmail: UserEmail) => dispatch(getUserEmail(userEmail))
-  }
-}
+// const mapDispatchToProps = (dispatch: any) => {
+//   return {
+//     onCheckAuthentication: (isAuthenticated: IsAuthenticated) => dispatch(getIsAuthenticated(isAuthenticated)),
+//     // onGetAccessToken: (accessToken: AccessToken) => dispatch(getAccessToken(accessToken)),
+//     // onGetUserEmail: (userEmail: UserEmail) => dispatch(getUserEmail(userEmail))
+//   }
+// }
 
 class MainNavigation extends Component<MainNavPropsTypes, {}> {
   logout = () => {
@@ -42,27 +43,39 @@ class MainNavigation extends Component<MainNavPropsTypes, {}> {
       .then((isAuthenticated: boolean) => {
         if (isAuthenticated !== this.props.isAuthenticated) {
           console.log('User is authenticated!')
-          this.props.onCheckAuthentication(isAuthenticated);
+          this.props.dispatch(getIsAuthenticated(isAuthenticated));
           this.getAccessToken();
         }
       });
   }
   
-  getAccessToken = (): void => {
+  getAccessToken = () => {
+    console.log('getAccessToken is running!')
+    this.props.dispatch({ type: 'REQUEST_PENDING' });
     this.props.auth.getAccessToken()
-      .then((accessToken: string) => {
-        console.log('Got accessToken: ', accessToken);
-        this.props.onGetAccessToken(accessToken);
+      // .then((response: any) => response.json())
+      .then((data: string) => {
+        this.props.dispatch(getAccessToken(data))
         this.getUser();
       })
-      .catch((err: Error) => console.log(err));
+      .catch((err: Error) => this.props.dispatch({ type: 'REQUEST_FAILED', payload: err }));
   }
+
+  // getAccessToken = (): void => {
+    // this.props.auth.getAccessToken()
+    //   .then((accessToken: string) => {
+    //     console.log('Got accessToken: ', accessToken);
+    //     this.props.dispatch(getAccessToken(accessToken));
+    //     this.getUser();
+    //   })
+    //   .catch((err: Error) => console.log(err));
+  // }
 
   getUser(): void {
     this.props.auth.getUser()
       .then((user: any) => {
         console.log('Got user email: ', user.email)
-        this.props.onGetUserEmail(user.email);
+        this.props.dispatch(getUserEmail(user.email));
       })
       .catch((err: Error) => console.log(err));
   }
@@ -98,4 +111,4 @@ class MainNavigation extends Component<MainNavPropsTypes, {}> {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withAuth(MainNavigation));
+export default connect(mapStateToProps)(withAuth(MainNavigation));

@@ -32,12 +32,19 @@ export const setUserEmail = (state = userEmailInitialState, action: GetUserEmail
 }
 
 const accessTokenInitialState = {
-  accessToken: ''
+  isPending: false,
+  accessToken: '',
+  err: ''
 }
 
-export const setAccessToken = (state = accessTokenInitialState, action: GetAccessTokenAction) => {
-  if (action.type === SET_ACCESS_TOKEN) {
-    return Object.assign({}, state, { accessToken: action.payload }); 
+export const setAccessToken = (state = accessTokenInitialState, action: any) => {
+  switch (action.type) {
+    case 'REQUEST_PENDING':
+      return Object.assign({}, state, { isPending: true }); 
+    case SET_ACCESS_TOKEN:
+      return Object.assign({}, state, { accessToken: action.payload });
+    case 'REQUEST_FAILED':
+      return Object.assign({}, state, { err: action.payload });
   }
   return state;
 }
