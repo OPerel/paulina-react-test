@@ -73,16 +73,23 @@ class FlowManagement extends Component<FlowManagementProps, FlowManagementState>
         <FlowManagementTable
           tableName="Published Documents"
           documentsList={publishedDocumentsList}
-          headerList={['Document Name', 'Document ID', 'Creator']}
-          keyValueList={['doc.name', 'doc._id', 'doc._metadata.creator']}
+          headerList={['Document Name', 'Owner', 'Element Path']}
+          keyValueList={['doc.name', 'doc._metadata.owner.name', 'doc._metadata.owner.ElementPath']}
           accessToken={this.state.accessToken}
         />
 
         <FlowManagementTable
           tableName="Progress Documents"
           documentsList={pDocumentsList}
-          headerList={['Document Name', 'Document ID', 'Creator']}
-          keyValueList={['doc.name', 'doc._id', 'doc._metadata.creator']}
+          headerList={['Document Name', 'Owner', 'Element Path', 'Creator', 'Shared With', 'Descriptor']}
+          keyValueList={[
+            'doc.name',
+            'doc._metadata.owner.name',
+            'doc._metadata.owner.ElementPath',
+            'doc._metadata.creator',
+            'doc._metadata.sharedWith',
+            'doc._metadata.descriptor.name'
+          ]}
         />
 
         <FlowManagementTable

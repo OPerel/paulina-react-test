@@ -9,15 +9,16 @@
     "@types/node": "12.12.11",
     "@types/react": "16.9.11",
     "@types/react-dom": "16.9.4",
+    "henriettastencilcomponents": "0.0.5",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "react-router-dom": "^5.1.2",
-    "react-scripts": "3.2.0",
+    "react-scripts": "^3.4.1",
     "synctractor": "^0.2.0",
     "typescript": "3.7.2"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "node node_modules/react-scripts/scripts/start.js",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "protractor": "protractor src/tests/loginTests/conf_login.js",

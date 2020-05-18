@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { withAuth } from '@okta/okta-react';
 
+import UserDocumentTable from './UserDocumentTable/UserDocumentTable';
+
 // import './FlowManagementTable.css';
 
 type FlowManagementPropsTypes = {
@@ -24,10 +26,10 @@ class UserDocument extends Component<FlowManagementPropsTypes, FlowManagementSta
       .then((token: string) => token)
   }
 
-  async fetchUserDocument() {
+  async getUserCurrentContext() {
     const accessToken = 'Barear ' + await this.accessToken();
-    console.log('Send usergetdocument requset with accessToken: ', accessToken);
-    fetch(`${process.env.REACT_APP_API_URL}/api/usergetdocument?SessionId=dslf546khds$GgGfhsdfdfsd`, {
+    console.log('Send get-user-current-context requset with accessToken: ', accessToken);
+    fetch(`${process.env.REACT_APP_API_URL}/api/get-user-current-context?SessionId=dslf546khds$GgGfhsdfdfsd`, {
       method: 'post',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
@@ -36,21 +38,22 @@ class UserDocument extends Component<FlowManagementPropsTypes, FlowManagementSta
     })
     .then(res => res.json())
     .then((documentData) => {
-      console.log('usergetdocument Success Data: ', documentData);
+      console.log('get-user-current-context Success Data: ', documentData);
       this.setState({ userDocument: documentData })
     })
     .catch(err => console.log(err));
   }
 
   componentDidMount() {
-    this.fetchUserDocument();
+    this.getUserCurrentContext();
   }
 
   render() {
     return (
       <div>
         <h3>User Document:</h3>
-        {JSON.stringify(this.state.userDocument)}
+        {/* <pre style={{ textAlign: 'left' }}>{JSON.stringify(this.state.userDocument, null, 2)}</pre> */}
+        <UserDocumentTable userDocument={this.state.userDocument} />
       </div>
     )
   }
