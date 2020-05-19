@@ -9,7 +9,7 @@ type Props = {
 
 const UserDocument: React.FC<Props> = ({ auth }) => {
 
-  const [userDocument, setUserDocument] = useState<any>({})
+  const [userDocument, setUserDocument] = useState<any>({});
 
   const getAccessToken = async (): Promise<string> => {
     return auth.getAccessToken()

@@ -42,7 +42,7 @@ const FlowManagementTable: React.FC<Props> = ({ tableName, documentsList, header
         </thead>
         <tbody>
           {
-            documentsList ? documentsList.map((doc: any) => {
+            documentsList && documentsList.map((doc: any) => {
               const owner = doc._metadata?.owner;
               const data = {
                 Owner: owner,
@@ -65,7 +65,7 @@ const FlowManagementTable: React.FC<Props> = ({ tableName, documentsList, header
                   </td>
                 </tr>
               )
-            }) : null
+            })
           }
         </tbody>
       </table>
