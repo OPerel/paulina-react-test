@@ -18,10 +18,10 @@ function Defs() {
   this.getAlertPromise = getAlertPromise;
 // #######################################################################################################
 
-  // process.env is not working
+  // process.env is not working here...
   const userKey = `floydwonderful@gmail.com`;
   this.UserKey = userKey;
-  this.OktaUserPassword = `testingFloyd2`;
+  this.OktaUserPassword = `Q1w2e3r4`;
 
   const SendToOutsourceFlowMetadata = 'SendToOutsourceFlowMetadata';
   this.SendToOutsourceFlowMetadata = SendToOutsourceFlowMetadata;
