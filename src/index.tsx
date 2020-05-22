@@ -13,8 +13,6 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 /* eslint-disable */
 
-import { applyPolyfills, defineCustomElements } from 'henriettastencilcomponents/loader';
-
 function onAuthRequired({ history }: any): void {
   history.push('/login');
 }
@@ -39,6 +37,3 @@ ReactDOM.render(
 // Learn more about service workers: https://bit.ly/CRA-PWA
 serviceWorker.unregister();
 
-applyPolyfills().then(() => {
-  defineCustomElements(window);
-});

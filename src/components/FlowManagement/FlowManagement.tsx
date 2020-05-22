@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { withAuth } from '@okta/okta-react';
 
-import FlowManagementTable from './FlowManagementTable';
+import FlowManagementTable from './FlowManagementTable/FlowManagementTable';
 
 type FlowManagementProps = {
   auth: any
@@ -12,35 +12,35 @@ const FlowManagement: React.FC<FlowManagementProps> = ({ auth }) => {
   const [accessToken, setAccessToken] = useState<string>('');
   const [userFlows, setUserFlows] = useState<any>({});
 
-  const getUserFlows = async (): Promise<void> => {
-    let accessToken = await auth.getAccessToken();
-    setAccessToken(accessToken);
-    if (localStorage.getItem('Registration') === 'true') {
-      accessToken = `Registration Barear ${accessToken}` 
-      localStorage.setItem('Registration', 'false');
-    } else {
-      accessToken = `Barear ${accessToken}`  
-    }
-    
-    const url = `${process.env.REACT_APP_API_URL}/api/getuserflows?SessionId=dslf546khds$GgGfhsdfdfsd`;
-    console.log('send getuserflows req with accessToken: ' + accessToken + '\nAnd static SessionId');
-    fetch(url, {
-      method: 'get',
-      headers: {
-        authorization: accessToken
-      },
-    })
-    .then((res: any) => res.json())
-    .then((userFlows: any) => {
-      console.log('Got user flows: ', userFlows);
-      setUserFlows(userFlows);
-    })
-    .catch(err => {
-      console.warn(err);
-    });
-  }
-
   useEffect(() => {
+    const getUserFlows = async (): Promise<void> => {
+      let accessToken = await auth.getAccessToken();
+      setAccessToken(accessToken);
+      if (localStorage.getItem('Registration') === 'true') {
+        accessToken = `Registration Barear ${accessToken}`
+        localStorage.setItem('Registration', 'false');
+      } else {
+        accessToken = `Barear ${accessToken}`  
+      }
+      
+      const url = `${process.env.REACT_APP_API_URL}/api/getuserflows?SessionId=dslf546khds$GgGfhsdfdfsd`;
+      console.log('send getuserflows req with accessToken: ' + accessToken + '\nAnd static SessionId');
+      fetch(url, {
+        method: 'get',
+        headers: {
+          authorization: accessToken
+        },
+      })
+      .then((res: any) => res.json())
+      .then((userFlows: any) => {
+        console.log('Got user flows: ', userFlows);
+        setUserFlows(userFlows);
+      })
+      .catch(err => {
+        console.warn(err);
+      });
+    }
+
     getUserFlows();
   }, []);
 
